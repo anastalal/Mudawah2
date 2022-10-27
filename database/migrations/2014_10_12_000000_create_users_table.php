@@ -18,14 +18,14 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone_no')->unique();
+            $table->string('phone_no')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar')->nullable()->default('helloavatar');
             $table->string('imgages')->nullable();
             $table->text('description')->nullable();
             $table->integer('followers')->nullable();
-            
+
           //RelationShipes
             $table->integer('parent_id')->nullable();
 
