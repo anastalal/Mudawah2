@@ -70,9 +70,9 @@ class AuthController extends Controller
             [
                 'name' => $name,
                 'email' => $email,
-                'password' => $password,
-                'imgages' =>$image,
-                'parent_id'=>$parent_id
+                'password' => $password
+                //'imgages' =>$image,
+               // 'parent_id'=>$parent_id
             ]
         );
         $accessToken = $user->createToken('authToken')->accessToken;
