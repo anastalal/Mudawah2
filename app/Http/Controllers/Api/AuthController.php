@@ -71,14 +71,14 @@ class AuthController extends Controller
                 'name' => $name,
                 'email' => $email,
                 'password' => $password,
-                'imgages' =>$avatar,
+                'imgages' =>$image,
                 'parent_id'=>$parent_id
             ]
         );
         $accessToken = $user->createToken('authToken')->accessToken;
         return response(['user' => $user, 'token' => $accessToken]);
 
-        
+
     }
     public function login(Request $request)
     {
