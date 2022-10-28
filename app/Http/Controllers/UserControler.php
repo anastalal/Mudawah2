@@ -36,10 +36,10 @@ class UserControler extends Controller
 
         return $data;
     }
-   
+
     public function getUsers(Request $request){
         $users = User::orderBy('created_at', 'DESC');
-        
+
 
         if (isset($_GET['user_id']) && $_GET['user_id']) {
             $users->where('user_id', $request->category_id);
@@ -48,24 +48,24 @@ class UserControler extends Controller
         if (isset($_GET['id']) && $_GET['id']) {
             $users->where('id', $request->id);
         }
-           
+
         $data =  DoctorResource::collection($users->get());
 
         return $data;
-   
+
         }
 
-   
-   
-   
+
+
+
         /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-   
-   
-   
+
+
+
      public function create()
     {
         //
@@ -91,37 +91,37 @@ class UserControler extends Controller
             return response(['res' => $validator->errors()->all()], 422);
         }
         $impFileName = '';
-   
 
-        foreach (explode(',', $request->images)  as  $value) {
-            $name =   Str::random(15) . '.jpg';
-            // decode the base64 file 
-            $file = base64_decode(
-                $value
-            );
-            Storage::put('public/users/'  .  $name,   $file);
-            file_put_contents(public_path() . '/storage/users/' . $name, $file);
-            $fileName = 'users/' . $name;
-            $arrFileName[] = $fileName;
-        }
-        if (isset($arrFileName)) {
-            $impFileName = implode(',', $arrFileName);
-        }
 
- 
+        // foreach (explode(',', $request->images)  as  $value) {
+        //     $name =   Str::random(15) . '.jpg';
+        //     // decode the base64 file
+        //     $file = base64_decode(
+        //         $value
+        //     );
+        //     Storage::put('public/users/'  .  $name,   $file);
+        //     file_put_contents(public_path() . '/storage/users/' . $name, $file);
+        //     $fileName = 'users/' . $name;
+        //     $arrFileName[] = $fileName;
+        // }
+        // if (isset($arrFileName)) {
+        //     $impFileName = implode(',', $arrFileName);
+        // }
 
-        $avatar = null;
-        if (isset($request->avatar) && $request->avatar != null) {
-            $name =   Str::random(15) . '.jpg';
-            // decode the base64 file 
-            $file = base64_decode(
-                $request->avatar
-            );
-            Storage::put('public/users/'  .  $name,   $file);
-            file_put_contents(public_path() . '/storage/users/' . $name, $file);
-            $avatar = 'users/' . $name;
-        }
-        
+
+
+        // $avatar = null;
+        // if (isset($request->avatar) && $request->avatar != null) {
+        //     $name =   Str::random(15) . '.jpg';
+        //     // decode the base64 file
+        //     $file = base64_decode(
+        //         $request->avatar
+        //     );
+        //     Storage::put('public/users/'  .  $name,   $file);
+        //     file_put_contents(public_path() . '/storage/users/' . $name, $file);
+        //     $avatar = 'users/' . $name;
+        // }
+
 
         $user = User::create(
             [
@@ -131,7 +131,7 @@ class UserControler extends Controller
                 'avatar' => $avatar,
                 'parent_id' => $parent_id,
                // 'images' => $impFileName
-                'imgages' => $impFileName,
+              //  'imgages' => $impFileName,
                 'role_id'=>$role_id
             ]
         );
@@ -151,7 +151,7 @@ class UserControler extends Controller
             'updated_at' => $user->updated_at,
             'seen' => $user->seen,
             'phone_number' => $user->phone
-            
+
         ];
         $accessToken = $user->createToken('authToken')->accessToken;
         return response(['user' => $data, 'token' => $accessToken]);
@@ -189,7 +189,7 @@ class UserControler extends Controller
                     'updated_at' => $user->updated_at,
                     'seen' => $user->seen,
                     'phone_number' => $user->phone
-                    
+
                 ];
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
                 $response = [
@@ -250,7 +250,7 @@ class UserControler extends Controller
 
         if (isset($request->avatar) && $request->avatar != null) {
             $name =   Str::random(15) . '.jpg';
-            // decode the base64 file 
+            // decode the base64 file
             $file = base64_decode(
                 $request->avatar
             );
@@ -266,7 +266,7 @@ class UserControler extends Controller
         if (isset($request->email) && $request->email != null) {
             $user->email = $request->email;
         }
-   
+
 
         $save =  $user->save();
         $data=   [
@@ -285,7 +285,7 @@ class UserControler extends Controller
             'updated_at' => $user->updated_at,
             'seen' => $user->seen,
             'phone_number' => $user->phone
-            
+
         ];
         if ($save) {
             return
@@ -303,14 +303,14 @@ class UserControler extends Controller
         //
     }
 
-    
+
 
     public function changePassword(Request $request) {
         if (!(Hash::check($request->get('current-password'), $request->user()->password))) {
             // The passwords matches
             return response(["res"=>"Your current password does not matches with the password."] );
         }
-        
+
         if(strcmp($request->get('current-password'), $request->get('new-password')) == 0){
             // Current password and new password same
             return response(["res"=>"errorNew Password cannot be same as your current password."]);
@@ -319,7 +319,7 @@ class UserControler extends Controller
         $validatedData = $request->validate([
             'current-password' => 'required',
             'new-password' => 'required|string|min:8|confirmed',
-            
+
 
         ]);
         //'new-password_confirmation' => 'required|between:8,255|confirmed',
@@ -329,6 +329,6 @@ class UserControler extends Controller
         $user->save();
 
         return response(["res"=>"Password successfully changed!"]);
- 
+
    }
 }
