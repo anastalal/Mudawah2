@@ -14,7 +14,7 @@ class AddPriceToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->double('price');
+            $table->double('price')->nullable()->default(0);
 
         });
     }
