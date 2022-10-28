@@ -128,7 +128,7 @@ class UserControler extends Controller
                 'name' => $Uname,
                 'email' => $email,
                 'password' => $password,
-                'avatar' => $avatar,
+                //'avatar' => $avatar,
                 'parent_id' => $parent_id,
                // 'images' => $impFileName
               //  'imgages' => $impFileName,
